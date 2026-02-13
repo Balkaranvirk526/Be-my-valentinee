@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            background-color: #fff5f5;
+            overflow: hidden; /* Prevents scrollbars if the button jumps near edges */
+        }
+        #no-button {
+            transition: all 0.2s ease;
+            position: absolute;
+        }
+        .btn-shadow {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen font-sans">
+
+    <div id="main-card" class="text-center p-8 bg-white rounded-3xl btn-shadow z-10">
+        <div class="mb-6 flex justify-center">
+            <img id="display-gif" 
+                 src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3ZzR2amZ3amZ3amZ3amZ3amZ3amZ3amZ3amZ3amZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/qUIm586MmLaBy/giphy.gif" 
+                 alt="Begging Puppy" 
+                 class="rounded-xl w-64 h-64 object-cover">
+        </div>
+
+        <h1 id="question" class="text-3xl font-bold text-pink-600 mb-8">
+          Mandeep Will you be my Valentine? ❤️
+        </h1>
+
+        <div class="flex flex-row justify-center items-center gap-4 h-16">
+            <button id="yes-button" 
+                    class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-10 rounded-full text-xl transition-transform active:scale-90 btn-shadow">
+                Yes
+            </button>
+            
+            <button id="no-button" 
+                    class="bg-gray-400 text-white font-bold py-3 px-10 rounded-full text-xl btn-shadow">
+                No
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('no-button');
+        const yesBtn = document.getElementById('yes-button');
+        const gifImg = document.getElementById('display-gif');
+        const questionText = document.getElementById('question');
+
+        // Logic for the "No" button to escape
+        const moveButton = () => {
+            // Calculate random positions within the viewport
+            // Subtracting button dimensions to keep it on screen
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        };
+
+        // Desktop escape
+        noBtn.addEventListener('mouseover', moveButton);
+        
+        // Mobile escape
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents clicking on mobile
+            moveButton();
+        });
+
+        // "Yes" Button Click Event
+        yesBtn.addEventListener('click', () => {
+            // Change GIF to celebratory
+            gifImg.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3ZzR2amZ3amZ3amZ3amZ3amZ3amZ3amZ3amZ3amZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/Is1O1TWZKl7ig/giphy.gif";
+            
+            // Change Text
+            questionText.innerText = "Yay! See you on the 14th! 🎉";
+            questionText.classList.remove('text-pink-600');
+            questionText.classList.add('text-green-500');
+
+            // Hide the No button
+            noBtn.style.display = 'none';
+
+            // Confetti Blast!
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff69b4', '#ff1493', '#ffffff']
+            });
+        });
+    </script>
+</body>
+</html>
